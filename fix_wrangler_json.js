@@ -16,10 +16,16 @@ if (fs.existsSync(filePath)) {
   // 3. Remove triggers object which confuses the Pages parser
   delete data.triggers;
 
-  // 4. Optionally clear other fields that cause warnings
+  // 4. Remove Workers-only keys that trigger Pages validator errors
+  delete data.main;
+  delete data.rules;
+  delete data.no_bundle;
+
+  // 5. Clear other metadata fields that trigger warnings
   delete data.cloudchamber;
   delete data.workflows;
   delete data.queues;
+  delete data.dev;
 
   fs.writeFileSync(filePath, JSON.stringify(data, null, 2), 'utf8');
   console.log('Successfully updated wrangler.json');
